@@ -37,9 +37,10 @@ class RemoLightOperation {
   getLightInfo_InRemoInfo() {
     const device_infoes = getRemoInfo('appliances');
 
+    this.light_infoes = []
     for(let i = 0;i < device_infoes.length;i++){
       if(device_infoes[i].image == 'ico_light'){  //照明のデータかを判断するためにそのデータのアイコンの名前を確認
-        this.light_infoes[this.light_infoes.length] = device_infoes[i];
+        this.light_infoes.push(device_infoes[i])
       }
     }
     const formattedResponse = JSON.stringify(this.light_infoes, null, 2);
