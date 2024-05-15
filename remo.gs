@@ -1,39 +1,33 @@
-//ここで書かれているクラスを使うときはPulseTrackerが操作するスプレッドシートを編集してはいけない
+function getRemoInfo(endpoint){
+    const headers = {
+      "Content-Type" : "application/json;",
+      'Authorization': 'Bearer ' + REMO_ACCESS_TOKEN
+    };
 
-class SheetManager{
-  constructor(sheet){
-    this.sheet = sheet;
-    this.average_heart_rates_queue = [];
-  }
+    const options = {
+      "method" : "get",
+      "headers" : headers
+    };
 
-  updateSheet() {
-    try {
-      this.get_heart_rate_with_time();
-      const averageHeartRate = this.getAverageHeartRate();
-      
-      const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-      const sheet = spreadsheet.getSheetByName('HeartRateAvarageSheet day');
-      if (!sheet) {
-        throw new Error('指定されたシートが見つかりません');
-      }
-
-      const lastRow = sheet.getLastRow();
-      const now = new Date();
-      sheet.getRange(lastRow + 1, 1).setValue(now); // 現在の日時を追加
-      sheet.getRange(lastRow + 1, 2).setValue(averageHeartRate); // 平均心拍数を追加
-
-      Logger.log('Average heart rate updated successfully');
-    } catch (error) {
-      Logger.log('Error updating sheet: ' + error.message);
-    }
-
-  }
-
-  enqueue(time, avarage_heart_rate){
+    const response = UrlFetchApp.fetch(REMO_DATA_URL + endpoint, options);
+    const info = JSON.parse(response.getContentText());
+    const formattedResponse = JSON.stringify(info, null, 2);
+    Logger.log(formattedResponse);
     
-  }
+    return info;
+}
 
-  dequeue(){
-    
-  }
+
+function remo_test1(){
+  const device_infoes = getRemoInfo('appliances');
+
+  const formattedResponse = JSON.stringify(device_infoes, null, 2);
+  Logger.log(formattedResponse);
+}
+
+function remo_test2(){
+  const deviceData = getRemoInfo('devices');
+
+  const formattedResponse = JSON.stringify(deviceData, null, 2);
+  Logger.log(formattedResponse)
 }

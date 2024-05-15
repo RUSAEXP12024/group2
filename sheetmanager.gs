@@ -1,68 +1,39 @@
-class SheetHeartRateReader {
-  constructor() {
-    this.heart_rate_with_time = [];
-    this.average_heart_rate = null;
-    this.sheet = null;
-    this.data = null;//スプレッドシートからそのまま出したデータ
-    this.data_length;
+//ここで書かれているクラスを使うときはPulseTrackerが操作するスプレッドシートを編集してはいけない
+
+class SheetManager{
+  constructor(sheet){
+    this.sheet = sheet;
+    this.average_heart_rates_queue = [];
   }
 
-  get_heart_rate_with_time() {
-
-    this.getData();
-
-    const headerRow = this.data[0];
-    const TimeIndex = headerRow.indexOf('time');
-    const HeartRateIndex = headerRow.indexOf('Heart Rate');
-
-    if (TimeIndex >= 0 && HeartRateIndex >= 0) {
-      for (let i = 1; i < this.data_length; i++) {
-        this.add_heart_rate_with_time(this.data[i][TimeIndex], this.data[i][HeartRateIndex]);
-      }
-    }
-  }
-
-  getData() {
-    if (this.sheet === null) {
-      throw new Error('シートが選択されていません');
-    }else{
-      this.data = this.sheet.getDataRange().getValues();
-      this.data_length = this.data.length;
-    }
-  }
-
-  add_heart_rate_with_time(time, heart_rate) {
-    this.heart_rate_with_time.push({ time: time, heart_rate: heart_rate });
-  }
-
-  getSheet(name = 'HeartRateData') {
-    const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    this.sheet = spreadsheet.getSheetByName(name);
-
-    if (!this.sheet) {
-      throw new Error('シートが見つかりません');
-    }
-
-    return this.sheet;
-  }
-
-  getLastData() {
-    return this.heart_rate_with_time[this.data_length - 1];
-  }
-
-  getAverageHeartRate() {
-
-    if (this.data_length > 1) {
-      let sum = 0;
-      for (let i = 0; i < this.data_length; i++) {
-        sum += this.heart_rate_with_time[i].heart_rate;
-      }
-      this.average_heart_rate = sum / this.heart_rates.length;
+  updateSheet() {
+    try {
+      this.get_heart_rate_with_time();
+      const averageHeartRate = this.getAverageHeartRate();
       
-      return this.average_heart_rate;
+      const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+      const sheet = spreadsheet.getSheetByName('HeartRateAvarageSheet day');
+      if (!sheet) {
+        throw new Error('指定されたシートが見つかりません');
+      }
 
-    } else {
-      throw new Error('平均を出すためのデータがありません');
+      const lastRow = sheet.getLastRow();
+      const now = new Date();
+      sheet.getRange(lastRow + 1, 1).setValue(now); // 現在の日時を追加
+      sheet.getRange(lastRow + 1, 2).setValue(averageHeartRate); // 平均心拍数を追加
+
+      Logger.log('Average heart rate updated successfully');
+    } catch (error) {
+      Logger.log('Error updating sheet: ' + error.message);
     }
+
+  }
+
+  enqueue(time, avarage_heart_rate){
+    
+  }
+
+  dequeue(){
+    
   }
 }

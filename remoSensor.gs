@@ -1,33 +1,22 @@
-function getRemoInfo(endpoint){
-    const headers = {
-      "Content-Type" : "application/json;",
-      'Authorization': 'Bearer ' + REMO_ACCESS_TOKEN
-    };
+class RemoSensorReader {
+  constructor() {
+    this.brightness = null;
+    this.is_there_human = null;
+  }
 
-    const options = {
-      "method" : "get",
-      "headers" : headers
-    };
+  updateRemoSensorData() {
+    const deviceData = getRemoInfo('devices');
 
-    const response = UrlFetchApp.fetch(REMO_DATA_URL + endpoint, options);
-    const info = JSON.parse(response.getContentText());
-    const formattedResponse = JSON.stringify(info, null, 2);
-    Logger.log(formattedResponse);
-    
-    return info;
+    this.brightness = deviceData[0].newest_events.il.val;
+    this.is_there_human = deviceData[0].newest_events.mo.val;
+
+    Logger.log("brightness: " + this.brightness + "  is there human: " + this.is_there_human);
+
+    return {brightness: this.brightness, is_there_human: this.is_there_human};
+  }
 }
 
-
-function remo_test1(){
-  const device_infoes = getRemoInfo('appliances');
-
-  const formattedResponse = JSON.stringify(device_infoes, null, 2);
-  Logger.log(formattedResponse);
-}
-
-function remo_test2(){
-  const deviceData = getRemoInfo('devices');
-
-  const formattedResponse = JSON.stringify(deviceData, null, 2);
-  Logger.log(formattedResponse)
+function remoSensor_test1(){
+  const rsr = new RemoSensorReader();
+  rsr.updateRemoSensorData();
 }
