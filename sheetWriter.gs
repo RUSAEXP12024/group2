@@ -10,8 +10,8 @@ function updateSheet(sheet_reader, queue) {
     }
 
     for(let row = 0;row < queue.size();row++){
-      sheet.getRange(row + 1, 1).setValue(queue[row].time); // 現在の日時を追加
-      sheet.getRange(row + 1, 2).setValue(queue[row].average_heart_rate); // 平均心拍数を追加
+      sheet.getRange(row + 2, 1).setValue(queue.items[row].time); // 現在の日時を追加
+      sheet.getRange(row + 2, 2).setValue(queue.items[row].heart_rate); // 平均心拍数を追加
     }
 
     Logger.log('Average heart rate updated successfully');

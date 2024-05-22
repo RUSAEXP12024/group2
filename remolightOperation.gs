@@ -34,6 +34,7 @@ class RemoLightOperation {
     Logger.log("light_switch_id : " + this.light_switch_id + " night_light_id : " + this.night_light_id);
   };
 
+  //Remoに登録されている家電のデータの一覧の中から照明のデータだけ取り出す
   getLightInfo_InRemoInfo() {
     const device_infoes = getRemoInfo('appliances');
 

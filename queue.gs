@@ -15,11 +15,11 @@ class Queue {
     return this.items.shift();
   }
 
-  front() {
+  peek() {
     if (this.isEmpty()) {
       return "No elements in Queue";
     }
-    return this.items[this.top];
+    return this.items[0];
   }
 
   isEmpty() {
@@ -28,13 +28,5 @@ class Queue {
 
   size() {
     return this.items.length;
-  }
-
-  average() {
-    let sum = 0;
-    for (let i = 0; i < this.items.length; i++) {
-      sum += this.items[i];
-    }
-    return sum / this.items.length;
   }
 }

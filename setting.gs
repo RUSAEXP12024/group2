@@ -8,3 +8,4 @@ const SPREADSHEET_ID = '1BCl00VAWVSAAorwJqXg4HynMUCrbZJc9Zs0Fj8vglK0'
 const REMO_OPERATION_URL = "https://api.nature.global/1/signals/";
 
 const REMO_DATA_URL = "https://api.nature.global/1/"
+
