@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   PulseTrackerProject.entitlements
+   PulseTrackerProject
+
+   Created by Eniac R. on 2024/05/07.
+   Copyright (c) 2024 ___ORGANIZATIONNAME___.
+-->
+<plist version="1.0">
+<dict>
+   <key>com.apple.developer.healthkit</key>
+   <true/>
+   <key>com.apple.developer.healthkit.access</key>
+   <array>
+      <string>health-records</string>
+   </array>
+</dict>
+</plist>
